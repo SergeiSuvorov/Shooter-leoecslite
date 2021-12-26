@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RuntimeData 
+﻿public class RuntimeData 
 {
-    
+    public bool IsPaused = false;
 }

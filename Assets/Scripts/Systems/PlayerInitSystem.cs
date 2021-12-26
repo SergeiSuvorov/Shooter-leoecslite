@@ -3,40 +3,42 @@ using UnityEngine;
 
 public class PlayerInitSystem : IEcsInitSystem
 {
-    private EcsWorld ecsWorld;
-    private StaticData staticData; 
-    private SceneData sceneData;
+    private EcsWorld _ecsWorld;
+    private StaticData _staticData; 
+    private SceneData _sceneData;
+    private UI _ui;
 
 
     public void Init(EcsSystems systems)
     {
-        ecsWorld = systems.GetWorld();
+        _ecsWorld = systems.GetWorld();
 
         var dataContainer = systems.GetShared<InitSystemDataContainer>();
-        staticData = dataContainer.Configuration;
-        sceneData = dataContainer.SceneData;
+        _staticData = dataContainer.Configuration;
+        _sceneData = dataContainer.SceneData;
+        _ui = dataContainer.UI;
 
-        int playerEntity = ecsWorld.NewEntity();
+        int playerEntity = _ecsWorld.NewEntity();
 
-        var inputPool = ecsWorld.GetPool<PlayerInputData>();
+        var inputPool = _ecsWorld.GetPool<PlayerInputData>();
         inputPool.Add(playerEntity);
         ref var inputData = ref inputPool.Get(playerEntity);
 
-        var playerPool =  ecsWorld.GetPool<Player>();
+        var playerPool =  _ecsWorld.GetPool<Player>();
         playerPool.Add(playerEntity);
         ref var player = ref playerPool.Get(playerEntity);
-        player.PlayerSpeed = staticData.PlayerSpeed;
+        player.PlayerSpeed = _staticData.PlayerSpeed;
 
         //// Спавним GameObject игрока
-        GameObject playerGO = Object.Instantiate(staticData.PlayerPrefab, sceneData.PlayerSpawnPoint.position, Quaternion.identity);
+        GameObject playerGO = Object.Instantiate(_staticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
         player.PlayerTransform = playerGO.transform;
         player.PlayerRigidbody = playerGO.GetComponent<Rigidbody>();
         player.PlayerAnimator = playerGO.GetComponent<Animator>();
 
-        playerGO.GetComponent<PlayerView>().EcsWorld = ecsWorld;
+        playerGO.GetComponent<PlayerView>().EcsWorld = _ecsWorld;
 
-        var weaponEntity = ecsWorld.NewEntity();
-        var weaponPool = ecsWorld.GetPool<Weapon>();
+        var weaponEntity = _ecsWorld.NewEntity();
+        var weaponPool = _ecsWorld.GetPool<Weapon>();
         weaponPool.Add(weaponEntity);
         ref var weapon = ref weaponPool.Get(weaponEntity);
         var weaponView = playerGO.GetComponentInChildren<WeaponSettings>();
@@ -51,16 +53,18 @@ public class PlayerInitSystem : IEcsInitSystem
         weapon.CurrentInMagazine = weaponView.CurrentInMagazine;
         weapon.MaxInMagazine = weaponView.MaxInMagazine;
 
-        var hasWeaponPool = ecsWorld.GetPool<HasWeapon>();
+        var hasWeaponPool = _ecsWorld.GetPool<HasWeapon>();
         hasWeaponPool.Add(playerEntity);
         ref var hasWeapon = ref hasWeaponPool.Get(playerEntity);
         hasWeapon.Weapon = weaponEntity;
 
         playerGO.GetComponent<PlayerView>().PlayerWeapon = weaponEntity;
 
-        var animatorRefPool = ecsWorld.GetPool<AnimatorRef>();
+        var animatorRefPool = _ecsWorld.GetPool<AnimatorRef>();
         animatorRefPool.Add(playerEntity);
         ref var animatorRef = ref animatorRefPool.Get(playerEntity);
         animatorRef.Animator = player.PlayerAnimator;
+
+        _ui.GameScreen.SetAmmoInfo(weapon.CurrentInMagazine, weapon.TotalAmmo);
     }
 }

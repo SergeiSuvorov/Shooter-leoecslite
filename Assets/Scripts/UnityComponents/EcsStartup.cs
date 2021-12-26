@@ -3,23 +3,25 @@ using UnityEngine;
 
 public class EcsStartup : MonoBehaviour
 {
-    public StaticData configuration;
-    public SceneData sceneData;
+    [SerializeField] private StaticData _configuration;
+    [SerializeField] private SceneData _sceneData;
+    [SerializeField] private UI _ui;
 
-    private EcsWorld ecsWorld;
-    private EcsSystems updateSystems;
-    private EcsSystems fixedUpdateSystems; // новая группа систем
+    private EcsWorld _ecsWorld;
+    private EcsSystems _updateSystems;
+    private EcsSystems _fixedUpdateSystems; // новая группа систем
 
     private void Start()
     {
 
-        ecsWorld = new EcsWorld();
-        //InitSystemDataContainer(configuration, sceneData) - используется для внедрения зависимостей при инициализации систем
-        updateSystems = new EcsSystems(ecsWorld, new InitSystemDataContainer(configuration, sceneData));
-        fixedUpdateSystems = new EcsSystems(ecsWorld);
+        _ecsWorld = new EcsWorld();
         RuntimeData runtimeData = new RuntimeData();
+        //InitSystemDataContainer(configuration, sceneData) - используется для внедрения зависимостей при инициализации систем
+        _updateSystems = new EcsSystems(_ecsWorld, new InitSystemDataContainer(_configuration, _sceneData, runtimeData,_ui));
+        _fixedUpdateSystems = new EcsSystems(_ecsWorld);
 
-        updateSystems
+
+        _updateSystems
             .Add(new PlayerInitSystem())
             .Add(new PlayerInputSystem())
             .Add(new PlayerRotationSystem())
@@ -29,38 +31,35 @@ public class EcsStartup : MonoBehaviour
             .Add(new SpawnProjectileSystem())
             .Add(new ProjectileHitSystem())
             .Add(new ProjectileMoveSystem())
-            .Add(new ReloadingSystem());
+            .Add(new ReloadingSystem())
+            .Add(new PauseSystem());
 
-
-
-
-
-        fixedUpdateSystems
+        _fixedUpdateSystems
             .Add(new PlayerMoveSystem()); // добавляем систему движения
 
         // Инициализируем группы систем
-        updateSystems.Init();
-        fixedUpdateSystems.Init();
+        _updateSystems.Init();
+        _fixedUpdateSystems.Init();
     }
 
     private void Update()
     {
-        updateSystems?.Run();
+        _updateSystems?.Run();
     }
 
     private void FixedUpdate()
     {
-        fixedUpdateSystems?.Run();
+        _fixedUpdateSystems?.Run();
     }
 
     private void OnDestroy()
     {
-        updateSystems?.Destroy();
-        updateSystems = null;
-        fixedUpdateSystems?.Destroy();
-        fixedUpdateSystems = null;
-        ecsWorld?.Destroy();
-        ecsWorld = null;
+        _updateSystems?.Destroy();
+        _updateSystems = null;
+        _fixedUpdateSystems?.Destroy();
+        _fixedUpdateSystems = null;
+        _ecsWorld?.Destroy();
+        _ecsWorld = null;
     }
 }
 

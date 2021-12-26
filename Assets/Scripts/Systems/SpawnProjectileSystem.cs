@@ -4,26 +4,23 @@ using UnityEngine;
 public class SpawnProjectileSystem : IEcsRunSystem
 {
 
-    private EcsWorld ecsWorld;
+    private EcsWorld _ecsWorld;
 
     public void Run(EcsSystems systems)
     {
-        ecsWorld = systems.GetWorld();
-        var bulletSpawnFilter = ecsWorld.Filter<Weapon>().Inc<SpawnProjectile>().End();
-        var weaponPool = ecsWorld.GetPool<Weapon>();
-        var spawnProjectilePool = ecsWorld.GetPool<SpawnProjectile>();
-        var projectilePool = ecsWorld.GetPool<Projectile>();
+        _ecsWorld = systems.GetWorld();
+        var bulletSpawnFilter = _ecsWorld.Filter<Weapon>().Inc<SpawnProjectile>().End();
+        var weaponPool = _ecsWorld.GetPool<Weapon>();
+        var spawnProjectilePool = _ecsWorld.GetPool<SpawnProjectile>();
+        var projectilePool = _ecsWorld.GetPool<Projectile>();
 
         foreach (var bulletSpawn in bulletSpawnFilter)
         {
-            Debug.Log("CreateBullet");
-
             ref var weapon = ref weaponPool.Get(bulletSpawn);
-
-
+            
             // Создаем GameObject пули и ее сущность
             var projectileGO = Object.Instantiate(weapon.ProjectilePrefab, weapon.ProjectileSocket.position, Quaternion.identity);
-            var projectileEntity = ecsWorld.NewEntity();
+            var projectileEntity = _ecsWorld.NewEntity();
 
             ref var projectile = ref projectilePool.Add(projectileEntity);
 

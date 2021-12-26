@@ -11,7 +11,6 @@ public class PlayerView : MonoBehaviour
     }
     public void Reload()
     {
-        Debug.Log("Reload on view");
         EcsWorld.GetPool<ReloadingFinished>().Add(PlayerWeapon);
     }
 }

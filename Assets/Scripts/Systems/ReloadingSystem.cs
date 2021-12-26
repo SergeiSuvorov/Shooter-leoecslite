@@ -1,7 +1,14 @@
 ﻿using Leopotam.EcsLite;
 
-public class ReloadingSystem : IEcsRunSystem
+public class ReloadingSystem : IEcsRunSystem, IEcsInitSystem
 {
+    private EcsWorld _ecsWorld;
+    private UI _ui;
+    public void Init(EcsSystems systems)
+    {
+        _ecsWorld = systems.GetWorld();
+        _ui = systems.GetShared<InitSystemDataContainer>().UI;
+    }
     public void Run(EcsSystems systems)
     {
         EcsWorld ecsWorld = systems.GetWorld();
@@ -13,7 +20,7 @@ public class ReloadingSystem : IEcsRunSystem
         var animatorRefPool = ecsWorld.GetPool<AnimatorRef>();
         var weaponPool = ecsWorld.GetPool<Weapon>();
         var reloadingFinishedPool = ecsWorld.GetPool<ReloadingFinished>();
-
+        var playerPool = ecsWorld.GetPool<Player>();
 
         foreach (var tryReloadEntity in tryReloadFilter)
         {
@@ -51,6 +58,11 @@ public class ReloadingSystem : IEcsRunSystem
             reloadingPool.Del(weapon.Owner);
             reloadingFinishedPool.Del(reloadingFinished);
             tryReloadPool.Del(weapon.Owner);
+
+            if (playerPool.Has(weapon.Owner))
+            {
+                _ui.GameScreen.SetAmmoInfo(weapon.CurrentInMagazine, weapon.TotalAmmo);
+            }
         }
 
     }
