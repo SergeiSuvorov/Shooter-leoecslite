@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public struct Player 
 {
-    public Transform playerTransform;
-    public Rigidbody playerRigidbody;
-    public Animator playerAnimator;
-    public float playerSpeed;
+    public Transform PlayerTransform;
+    public Rigidbody PlayerRigidbody;
+    public Animator PlayerAnimator;
+    public float PlayerSpeed;
 }

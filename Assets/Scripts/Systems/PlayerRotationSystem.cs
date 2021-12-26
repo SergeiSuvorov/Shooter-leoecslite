@@ -1,29 +1,31 @@
 ﻿using Leopotam.EcsLite;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRotationSystem : IEcsRunSystem
+public class PlayerRotationSystem : IEcsRunSystem, IEcsInitSystem
 {
     private SceneData sceneData;
-    public void Run(EcsSystems systems)
-    {
-        EcsWorld ecsWorld = systems.GetWorld();
+    private EcsWorld ecsWorld;
 
+    public void Init(EcsSystems systems)
+    {
+        ecsWorld = systems.GetWorld();
         var dataContainer = systems.GetShared<InitSystemDataContainer>();
         sceneData = dataContainer.SceneData;
+    }
 
+    public void Run(EcsSystems systems)
+    {
         var filter = ecsWorld.Filter<Player>().End();
         var playerPool = ecsWorld.GetPool<Player>();
         foreach (var i in filter)
         {
             ref var player = ref playerPool.Get(i);
 
-            Plane playerPlane = new Plane(Vector3.up, player.playerTransform.position);
-            Ray ray = sceneData.mainCamera.ScreenPointToRay(Input.mousePosition);
+            Plane playerPlane = new Plane(Vector3.up, player.PlayerTransform.position);
+            Ray ray = sceneData.MainCamera.ScreenPointToRay(Input.mousePosition);
             if (!playerPlane.Raycast(ray, out var hitDistance)) continue;
 
-            player.playerTransform.forward = ray.GetPoint(hitDistance) - player.playerTransform.position;
+            player.PlayerTransform.forward = ray.GetPoint(hitDistance) - player.PlayerTransform.position;
         }
     }
 }

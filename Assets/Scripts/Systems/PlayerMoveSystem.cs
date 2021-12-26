@@ -1,6 +1,4 @@
 ﻿using Leopotam.EcsLite;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMoveSystem : IEcsRunSystem
@@ -19,8 +17,8 @@ public class PlayerMoveSystem : IEcsRunSystem
             ref var player = ref playerPool.Get(i);
             ref var input  = ref playerInputPool.Get(i);
 
-            Vector3 direction = (Vector3.forward * input.moveInput.z + Vector3.right * input.moveInput.x).normalized;
-            player.playerRigidbody.AddForce(direction * player.playerSpeed);
+            Vector3 direction = (Vector3.forward * input.MoveInput.z + Vector3.right * input.MoveInput.x).normalized;
+            player.PlayerRigidbody.AddForce(direction * player.PlayerSpeed);
         }
 
     }

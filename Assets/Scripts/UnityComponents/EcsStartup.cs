@@ -1,6 +1,4 @@
 ﻿using Leopotam.EcsLite;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EcsStartup : MonoBehaviour
@@ -25,8 +23,17 @@ public class EcsStartup : MonoBehaviour
             .Add(new PlayerInitSystem())
             .Add(new PlayerInputSystem())
             .Add(new PlayerRotationSystem())
-            .Add(new PlayerAnimationSystem());
-       
+            .Add(new PlayerAnimationSystem())
+            .Add(new CameraFollowSystem())
+            .Add(new WeaponShootSystem())
+            .Add(new SpawnProjectileSystem())
+            .Add(new ProjectileHitSystem())
+            .Add(new ProjectileMoveSystem())
+            .Add(new ReloadingSystem());
+
+
+
+
 
         fixedUpdateSystems
             .Add(new PlayerMoveSystem()); // добавляем систему движения
@@ -55,19 +62,6 @@ public class EcsStartup : MonoBehaviour
         ecsWorld?.Destroy();
         ecsWorld = null;
     }
-}
-
-public sealed class InitSystemDataContainer
-{
-    public StaticData Configuration { get; private set; }
-    public SceneData SceneData { get; private set; }
-
-    public InitSystemDataContainer(StaticData configuration, SceneData sceneData)
-    {
-        Configuration = configuration;
-        SceneData = sceneData;
-    }
-
 }
 
 

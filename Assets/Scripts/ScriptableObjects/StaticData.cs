@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu]
 public class StaticData : ScriptableObject
 {
-    public GameObject playerPrefab;
-    public float playerSpeed;
-    public float smoothTime; 
-    public Vector3 followOffset; 
+    public GameObject PlayerPrefab;
+    public float PlayerSpeed;
+    public float SmoothTime; 
+    public Vector3 FollowOffset; 
 }

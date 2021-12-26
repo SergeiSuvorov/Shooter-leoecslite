@@ -1,6 +1,4 @@
 ﻿using Leopotam.EcsLite;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInitSystem : IEcsInitSystem
@@ -27,13 +25,42 @@ public class PlayerInitSystem : IEcsInitSystem
         var playerPool =  ecsWorld.GetPool<Player>();
         playerPool.Add(playerEntity);
         ref var player = ref playerPool.Get(playerEntity);
-        player.playerSpeed = staticData.playerSpeed;
+        player.PlayerSpeed = staticData.PlayerSpeed;
 
         //// Спавним GameObject игрока
-        GameObject playerGO = Object.Instantiate(staticData.playerPrefab, sceneData.playerSpawnPoint.position, Quaternion.identity);
-        player.playerTransform = playerGO.transform;
-        player.playerRigidbody = playerGO.GetComponent<Rigidbody>();
-        player.playerAnimator = playerGO.GetComponent<Animator>();
+        GameObject playerGO = Object.Instantiate(staticData.PlayerPrefab, sceneData.PlayerSpawnPoint.position, Quaternion.identity);
+        player.PlayerTransform = playerGO.transform;
+        player.PlayerRigidbody = playerGO.GetComponent<Rigidbody>();
+        player.PlayerAnimator = playerGO.GetComponent<Animator>();
 
+        playerGO.GetComponent<PlayerView>().EcsWorld = ecsWorld;
+
+        var weaponEntity = ecsWorld.NewEntity();
+        var weaponPool = ecsWorld.GetPool<Weapon>();
+        weaponPool.Add(weaponEntity);
+        ref var weapon = ref weaponPool.Get(weaponEntity);
+        var weaponView = playerGO.GetComponentInChildren<WeaponSettings>();
+
+        weapon.Owner = playerEntity;
+        weapon.ProjectilePrefab = weaponView.ProjectilePrefab;
+        weapon.ProjectileRadius = weaponView.ProjectileRadius;
+        weapon.ProjectileSocket = weaponView.ProjectileSocket;
+        weapon.ProjectileSpeed = weaponView.ProjectileSpeed;
+        weapon.TotalAmmo = weaponView.TotalAmmo;
+        weapon.WeaponDamage = weaponView.WeaponDamage;
+        weapon.CurrentInMagazine = weaponView.CurrentInMagazine;
+        weapon.MaxInMagazine = weaponView.MaxInMagazine;
+
+        var hasWeaponPool = ecsWorld.GetPool<HasWeapon>();
+        hasWeaponPool.Add(playerEntity);
+        ref var hasWeapon = ref hasWeaponPool.Get(playerEntity);
+        hasWeapon.Weapon = weaponEntity;
+
+        playerGO.GetComponent<PlayerView>().PlayerWeapon = weaponEntity;
+
+        var animatorRefPool = ecsWorld.GetPool<AnimatorRef>();
+        animatorRefPool.Add(playerEntity);
+        ref var animatorRef = ref animatorRefPool.Get(playerEntity);
+        animatorRef.Animator = player.PlayerAnimator;
     }
 }

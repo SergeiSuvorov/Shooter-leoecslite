@@ -1,7 +1,5 @@
 ﻿
 using Leopotam.EcsLite;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationSystem : IEcsRunSystem
@@ -20,10 +18,12 @@ public class PlayerAnimationSystem : IEcsRunSystem
             ref var player = ref playerPool.Get(i);
             ref var input = ref InputPool.Get(i);
 
-            float vertical = Vector3.Dot(input.moveInput.normalized, player.playerTransform.forward);
-            float horizontal = Vector3.Dot(input.moveInput.normalized, player.playerTransform.right);
-            player.playerAnimator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
-            player.playerAnimator.SetFloat("Vertical", vertical, 0.1f, Time.deltaTime);
+            float vertical = Vector3.Dot(input.MoveInput.normalized, player.PlayerTransform.forward);
+            float horizontal = Vector3.Dot(input.MoveInput.normalized, player.PlayerTransform.right);
+            player.PlayerAnimator.SetFloat("Horizontal", horizontal, 0.1f, Time.deltaTime);
+            player.PlayerAnimator.SetFloat("Vertical", vertical, 0.1f, Time.deltaTime);
+
+            player.PlayerAnimator.SetBool("Shooting", input.ShootInput);
         }
     }
 }

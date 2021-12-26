@@ -974,6 +974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2836004475591196945}
   - component: {fileID: 2836004475605291071}
+  - component: {fileID: 1383565628069836004}
   m_Layer: 0
   m_Name: AssaultRifle
   m_TagString: Untagged
@@ -1103,6 +1104,27 @@ SkinnedMeshRenderer:
     m_Center: {x: -34.27955, y: -49.079704, z: 120.48372}
     m_Extent: {x: 95.48148, y: 94.6697, z: 10.629513}
   m_DirtyAABB: 0
+--- !u!114 &1383565628069836004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2836004475591695665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2b73faf38cc6d438c3b34448b1d6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectilePrefab: {fileID: 1443791758670698866, guid: 40bb376089f0f8e448f7eee21202aad2,
+    type: 3}
+  ProjectileSocket: {fileID: 221997561083008042}
+  ProjectileSpeed: 30
+  ProjectileRadius: 5
+  WeaponDamage: 5
+  CurrentInMagazine: 2
+  MaxInMagazine: 2
+  TotalAmmo: 10
 --- !u!1 &2836004475591695667
 GameObject:
   m_ObjectHideFlags: 0
@@ -2613,6 +2635,7 @@ GameObject:
   - component: {fileID: 2836004473841745626}
   - component: {fileID: 4988232404260135074}
   - component: {fileID: 3383655439314722565}
+  - component: {fileID: 290767341200683}
   m_Layer: 0
   m_Name: PBRCharacter
   m_TagString: Untagged
@@ -2650,7 +2673,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2836004475591695743}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 860793eb3324391468f1c120a75ec049, type: 3}
+  m_Avatar: {fileID: 9000000, guid: e398e3aa9cdfcdc4ebd01a06e4c544ae, type: 3}
   m_Controller: {fileID: 9100000, guid: 6defa2fea7e9a934a8d2cafa30dc567a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -2690,6 +2713,19 @@ CapsuleCollider:
   m_Height: 2.114623
   m_Direction: 1
   m_Center: {x: 0, y: 0.9619837, z: 0}
+--- !u!114 &290767341200683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2836004475591695743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211a3ed637fee28419f6943a7eb19788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerWeapon: 0
 --- !u!1 &4038861936819825442
 GameObject:
   m_ObjectHideFlags: 0

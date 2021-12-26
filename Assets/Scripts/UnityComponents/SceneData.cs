@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SceneData : MonoBehaviour
 {
-    public Transform playerSpawnPoint;
-    public Camera mainCamera;
+    public Transform PlayerSpawnPoint;
+    public Camera MainCamera;
 }
