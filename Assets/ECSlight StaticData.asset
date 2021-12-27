@@ -17,3 +17,5 @@ MonoBehaviour:
   PlayerSpeed: 10
   SmoothTime: 0.3
   FollowOffset: {x: 0, y: 5, z: -10}
+  TurretPrefab: {fileID: 1718083479348488130, guid: 33e4ea53cb83fda4e8722365c38c1ce3,
+    type: 3}
