@@ -23,8 +23,11 @@ public class EcsStartup : MonoBehaviour
 
         _updateSystems
             .Add(new PlayerInitSystem())
+            .Add(new TurretInitSystem())
             .Add(new PlayerInputSystem())
             .Add(new PlayerRotationSystem())
+            .Add(new TurretRottationSystem())
+            .Add(new TurretShootingSystem())
             .Add(new PlayerAnimationSystem())
             .Add(new CameraFollowSystem())
             .Add(new WeaponShootSystem())

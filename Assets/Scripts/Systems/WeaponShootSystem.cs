@@ -25,8 +25,6 @@ public class WeaponShootSystem : IEcsRunSystem, IEcsInitSystem
             shootPool.Del(shootedWeapon);
             ref var weapon = ref weaponPool.Get(shootedWeapon);
 
-            
-
             if (weapon.CurrentInMagazine > 0)
             {
                 weapon.CurrentInMagazine--;

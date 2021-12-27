@@ -25,8 +25,11 @@ public class ProjectileMoveSystem : IEcsRunSystem
             if (hit)
             {
                 var hitPool = ecsWorld.GetPool<ProjectileHit>();
-                ref var projectileHit = ref hitPool.Add(projectileEntity);
-                projectileHit.RaycastHit = hitInfo;
+                if(!hitPool.Has(projectileEntity))
+                {
+                    ref var projectileHit = ref hitPool.Add(projectileEntity);
+                    projectileHit.RaycastHit = hitInfo;
+                }              
             }
 
             projectile.PreviousPos = projectile.ProjectileGO.transform.position;
